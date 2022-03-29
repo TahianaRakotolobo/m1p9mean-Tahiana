@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
   password = '';
   message = '';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private service:UserService) { }
 
   ngOnInit(): void {
   }
@@ -33,6 +34,6 @@ export class LoginComponent implements OnInit {
       console.log("Erreur", response);
       this.message = 'erreur';
     }
-    // this.service.authenticate(this.userId, this.password).subscribe(success, error);
+    this.service.authenticate(this.userId, this.password).subscribe(success, error);
   }
 }

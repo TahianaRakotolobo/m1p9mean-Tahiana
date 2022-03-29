@@ -1,0 +1,9 @@
+<h1>Register</h1>
+<p style="color:red">{{message}}</p>
+<form>
+    Username: <input [(ngModel)]="userId" name="userId" type="text">
+    Password: <input [(ngModel)]="password" name="password" type="password">
+    Account type: client restaurant livreur
+    Address: <input [(ngModel)]="address" name="address" type="text">
+    <button (click)="signin()">Sign In</button>
+</form> 

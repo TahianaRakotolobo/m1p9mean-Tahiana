@@ -6,6 +6,12 @@ export const environment = {
   production: false
 };
 
+export const base_url = "http://localhost:3000/back/";
+export const user = {
+  token : '',
+  mail : ''
+};
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
