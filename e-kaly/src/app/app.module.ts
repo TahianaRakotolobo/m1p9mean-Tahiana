@@ -12,6 +12,9 @@ import { NewplateComponent } from './newplate/newplate.component';
 import { PlateComponent } from './plate/plate.component';
 import { CommonModule } from '@angular/common';
 import { AllplatesComponent } from './allplates/allplates.component';
+import { OrderedComponent } from './ordered/ordered.component';
+import { ClientordersComponent } from './clientorders/clientorders.component';
+import { OrderdetailsComponent } from './orderdetails/orderdetails.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { AllplatesComponent } from './allplates/allplates.component';
     RegisterComponent,
     NewplateComponent,
     PlateComponent,
-    AllplatesComponent
+    AllplatesComponent,
+    OrderedComponent,
+    ClientordersComponent,
+    OrderdetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,13 @@
+Prêt à être livré? <button class="btn btn-outline-success my-2 my-sm-0" (click)="valider()">Valider</button>
+<div class="tab-content" id="v-pills-tabContent">
+    <div class="card-deck">
+        <div *ngFor="let element of list" class="card border-dark mb-3" style="max-width: 250px; min-width: 200px;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{element.orderdetails[0].name}}</h5>
+                <p class="card-text">Prix: {{element.orderdetails[0].price}} Ar</p>
+                <p class="card-text">Quantité: {{element.nb}}</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 <div class="tab-content" id="v-pills-tabContent">
     <div class="card-deck">
   
-        <div *ngFor="let element of list" class="card border-dark mb-3" style="max-width: 250px; min-width: 200px;">
+        <div *ngFor="let element of list; let i = index;trackBy:trackByIdx" class="card border-dark mb-3" style="max-width: 250px; min-width: 200px;">
             <!-- <a [routerLink]="['/plate']" [queryParams]="{idplate: element.id}"> -->
             <img src="..." class="card-img-top" alt="...">
             <div class="card-body">
@@ -11,7 +11,7 @@
                         <p class="card-text">{{element.price}} Ar</p>
                     </div>
                     <div class="col-4">
-                        <p class="card-text"><input style="width: 50px;" [(ngModel)]="nb" name="nb" type="number" placeholder="0"></p>
+                        <p class="card-text"><input style="width: 50px;" [(ngModel)]="nb[i]" name="nb[i]" type="number" placeholder="0"></p>
                     </div>
                 </div>
             </div>
@@ -19,3 +19,4 @@
         </div>
     </div>
 </div>
+<button class="btn btn-outline-success my-2 my-sm-0" (click)="valider()">Valider</button>

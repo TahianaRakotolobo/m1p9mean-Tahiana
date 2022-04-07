@@ -31,4 +31,30 @@ export class RestaurantService {
     }
     return this.http.post(urlresto, input);
   }
+
+  getAllOrders(idresto:number){
+    var urlresto = base_url + 'ordered-resto';
+    let input = {
+      idresto : idresto,
+    }
+    return this.http.post(urlresto, input);
+  }
+
+  getClientResto(idresto:number, idclient:number){
+    var urlresto = base_url + 'order-details';
+    let input = {
+      idresto : idresto,
+      idclient : idclient
+    }
+    return this.http.post(urlresto, input);
+  }
+
+  change(idresto:number, idclient:number){
+    var urlresto = base_url + 'statechange-resto';
+    let input = {
+      idresto : idresto,
+      idclient : idclient
+    }
+    return this.http.put(urlresto, input);
+  }
 }

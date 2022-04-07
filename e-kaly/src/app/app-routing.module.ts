@@ -6,6 +6,9 @@ import { RegisterComponent } from './register/register.component';
 import { NewplateComponent } from './newplate/newplate.component';
 import { PlateComponent } from './plate/plate.component';
 import { AllplatesComponent } from './allplates/allplates.component';
+import { OrderedComponent } from './ordered/ordered.component';
+import { ClientordersComponent } from './clientorders/clientorders.component';
+import { OrderdetailsComponent } from './orderdetails/orderdetails.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'accueil', pathMatch: 'full' },
@@ -14,7 +17,10 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'newplate', component: NewplateComponent },
   { path: 'plate', component: PlateComponent },
-  { path: 'allplates', component: AllplatesComponent }
+  { path: 'allplates', component: AllplatesComponent },
+  { path: 'ordered', component: OrderedComponent },
+  { path: 'clientorder', component: ClientordersComponent },
+  { path: 'orderdetails', component: OrderdetailsComponent }
 ];
 
 @NgModule({

@@ -211,21 +211,13 @@ mongoClient.connect(connectionString, {
         .catch(error => console.error(error));
     });
 
-    // -----------------------------------------------------------------------------------------------------------------
-    // -----------------------------------------------------------------------------------------------------------------
-    // ----------------------------- A revoir pour plusieurs plats en meme temps ---------------------------------------
-    // -----------------------------------------------------------------------------------------------------------------
-    // -----------------------------------------------------------------------------------------------------------------
     // passer une commande -> clients
     app.post('/order', function(req, res){
-        let order = {
-            idplate : Number(req.body.idplate),
-            nb : req.body.nb,
-            idclient : Number(req.body.idclient),
-            date : new Date(),
-            state : 'commande'
-        };
-        orderCollection.insertOne(order)
+        var order = new Array();
+        order = req.body.orders;
+        const options = { ordered: true };
+
+        orderCollection.insertMany(order, options)
         .then(result => {
             console.log('Insertion réussie');
             // res.redirect('/');
@@ -239,23 +231,25 @@ mongoClient.connect(connectionString, {
     });
 
     // liste des commandes passées en journée (+détails) -> clients
-    app.get('/ordered', function(req, res){
+    app.post('/ordered', function(req, res){
+        // console.log(Number(req.body.idclient));
         orderCollection.aggregate([
             { $lookup:
-               {
-                 from: 'plate',
-                 localField: 'idplate',
-                 foreignField: 'id',
-                 as: 'orderdetails'
-               }
+                {
+                    from: 'plate',
+                    localField: 'idplate',
+                    foreignField: 'id',
+                    as: 'orderdetails'
+                }
+            },
+            { $match: 
+                { 
+                    'idclient' : Number(req.body.idclient), 
+                    'state': 'commande' 
+                }
             }
-            ]).find(
-            { $and: [
-                { 'idclient' : Number(req.query.idclient) },
-                { 'date': new Date() },
-                { 'state': 'commande'}
-            ]}
-        ).toArray()
+        ])
+        .toArray()
         .then(plates => {
             res.status(200).json({
                 status: 'success',
@@ -346,22 +340,17 @@ mongoClient.connect(connectionString, {
     });
 
     // liste des commandes des clients -> restaurants
-    app.get('/ordered-resto', function(req, res){
-        orderCollection.group(
-            {
-                key: { 'idclient': 1 },
-                cond: { 
-                    $and: [
-                        { 'idresto' : Number(req.query.idresto) },
-                        { 'date': new Date() },
-                        { 'state' : 'commande' }
-                    ]
-                },
-                reduce: function ( curr, result ) { },
-                initial: { }
-            }
-        ).toArray()
+    app.post('/ordered-resto', function(req, res){
+        orderCollection.aggregate([
+            { $lookup: { from: 'user', localField: 'idclient', foreignField: 'id', as: 'clientdetails' } },
+            { $unwind: "$clientdetails" },
+            { $lookup: { from: 'user', localField: 'idresto', foreignField: 'id', as: 'restodetails' } },
+            { $unwind: "$restodetails" },
+            { $match: { 'idresto' : Number(req.body.idresto), 'state' : 'commande' } },
+            { $group: { _id: { "client": "$clientdetails", "resto": "$restodetails" } } }
+        ]).toArray()
         .then(plates => {
+            // console.log(plates);
             res.status(200).json({
                 status: 'success',
                 data: plates,
@@ -371,20 +360,23 @@ mongoClient.connect(connectionString, {
     });
 
     // détails commandes -> restaurants
-    app.get('/order-details', function(req, res){
+    app.post('/order-details', function(req, res){
+        console.log(req.body.idresto);
+        console.log(req.body.idclient);
         orderCollection.aggregate([
-            { $lookup:
-                {
-                    from: 'plate',
-                    localField: 'idplate',
-                    foreignField: 'id',
-                    as: 'orderdetails'
+            { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+            { $lookup: { from: 'user', localField: 'idclient', foreignField: 'id', as: 'clientdetails' } },
+            { $unwind: "$clientdetails" },
+            { $match: 
+                { 
+                    'idclient' : Number(req.body.idclient), 
+                    'idresto' : Number(req.body.idresto), 
+                    'state': 'commande' 
                 }
             }
-        ]).find(
-            { 'id' : Number(req.query.id) }
-        ).toArray()
+        ]).toArray()
         .then(plates => {
+            // console.log(plates);
             res.status(200).json({
                 status: 'success',
                 data: plates,
@@ -395,8 +387,8 @@ mongoClient.connect(connectionString, {
 
     // changer l'état d'une commande à prêt à livrer -> restaurant
     app.put('/statechange-resto', function(req, res){
-        orderCollection.findOneAndUpdate(
-            { id: Number(req.body.id) },
+        orderCollection.updateMany(
+            { idresto: Number(req.body.idresto), idclient: Number(req.body.idclient) },
             {
                 $set: {
                     state: 'pret'
