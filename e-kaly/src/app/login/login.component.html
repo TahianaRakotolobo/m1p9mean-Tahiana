@@ -1,7 +1,27 @@
+
+<div class="tab-content" id="v-pills-tabContent">
 <h1>Login</h1>
 <p style="color:red">{{message}}</p>
 <form>
-    Username: <input [(ngModel)]="userId" name="userId" type="text">
-    Password: <input [(ngModel)]="password" name="password" type="password">
-    <button (click)="signin()">Sign In</button>
+    <div class="form-group row">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Username</label>
+        <div class="col-sm-6">
+            <input  class="form-control" [(ngModel)]="userId" name="userId" type="text" placeholder="Username">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+        <div class="col-sm-6">
+            <input class="form-control" [(ngModel)]="password" name="password" type="password" placeholder="Password">
+        </div>
+    </div>
+    <!-- Username: <input class="form-control mr-sm-2" [(ngModel)]="userId" name="userId" type="text">
+    Password: <input class="form-control mr-sm-2" [(ngModel)]="password" name="password" type="password"> -->
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="signin()">Sign In</button>
 </form>
+</div>
+
+
+
+
+

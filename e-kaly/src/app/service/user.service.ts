@@ -11,11 +11,11 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   authenticate(login:string, password:string){
-    var urlLogin = base_url+'login';
+    var urlLogin = base_url+'signin';
     console.log(urlLogin);
     let input = {
-      mail : login,
-      mdp : password
+      username : login,
+      password : password
     }
     console.log(input);
     return this.http.post(urlLogin, input);
@@ -23,8 +23,36 @@ export class UserService {
 
   setUser (data : any) {
     user.token = data['token'];
-    user.mail = data['mail'];
+    user.id = data['id'];
+    user.name = data['name'];
+    user.usertype = data['usertype'];
+    // console.log('env', user);
+  }
 
-    console.log('env', user);
+  signup(username:string, password:string, usertype:string, address:string){
+    // console.log(username + ' ' + password + ' ' + usertype + ' ' + address);
+    var urlregister = base_url+'signup';
+    console.log(urlregister);
+    let input = {
+      username : username,
+      password : password,
+      usertype : usertype,
+      address : address
+    }
+    console.log(input);
+    return this.http.post(urlregister, input);
+  }
+
+  getResto(){
+    var urlresto = base_url + 'listeresto';
+    return this.http.get(urlresto);
+  }
+
+  getPlate(idresto:number){
+    var urlresto = base_url + 'menu';
+    let input = {
+      idresto : idresto,
+    }
+    return this.http.post(urlresto, input);
   }
 }

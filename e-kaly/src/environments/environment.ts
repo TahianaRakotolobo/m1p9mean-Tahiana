@@ -6,10 +6,12 @@ export const environment = {
   production: false
 };
 
-export const base_url = "http://localhost:3000/back/";
+export const base_url = "http://localhost:3000/";
 export const user = {
   token : '',
-  mail : ''
+  id : -1,
+  name : '',
+  usertype : ''
 };
 
 /*

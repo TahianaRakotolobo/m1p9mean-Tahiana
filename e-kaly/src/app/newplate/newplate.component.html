@@ -1,1 +1,12 @@
-<p>newplate works!</p>
+<div class="tab-content" id="v-pills-tabContent">
+  <h1>Nouveau plat</h1>
+  <p style="color:red">{{message}}</p>
+  <form>
+      nom: <input [(ngModel)]="name" name="name" type="text">
+      prix: <input [(ngModel)]="price" name="price" type="text">
+      bénéfice: <input [(ngModel)]="benefits" name="benefits" type="text">
+      <button type="button" (click)="submit()">S'inscrire</button>
+  </form>
+</div>
+
+ 

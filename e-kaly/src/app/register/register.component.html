@@ -1,9 +1,22 @@
-<h1>Register</h1>
-<p style="color:red">{{message}}</p>
-<form>
-    Username: <input [(ngModel)]="userId" name="userId" type="text">
-    Password: <input [(ngModel)]="password" name="password" type="password">
-    Account type: client restaurant livreur
-    Address: <input [(ngModel)]="address" name="address" type="text">
-    <button (click)="signin()">Sign In</button>
-</form> 
+<div class="tab-content" id="v-pills-tabContent">
+  <h1>Register</h1>
+  <p style="color:red">{{message}}</p>
+  <form>
+      Username: <input [(ngModel)]="username" name="username" type="text">
+      Password: <input [(ngModel)]="password" name="password" type="password">
+      <label for="usertype">Account type: </label>
+      <select [(ngModel)]="usertype" name="usertype" id="usertype">
+          <option value="Client" selected>Client</option>
+          <option value="Restaurant">Restaurant</option>
+          <option value="Livreur">Livreur</option>
+      </select>
+      Address: <input [(ngModel)]="address" name="address" type="text">
+      <button type="button" (click)="signup()">S'inscrire</button>
+  </form>
+</div>
+
+
+
+
+
+ 
