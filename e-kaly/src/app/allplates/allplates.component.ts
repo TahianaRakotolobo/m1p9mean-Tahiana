@@ -19,6 +19,12 @@ export class AllplatesComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private userservice:UserService, private restoservice:RestaurantService) { }
 
   ngOnInit(): void {
+    if (!localStorage.getItem('foo')) { 
+      localStorage.setItem('foo', 'no reload') 
+      location.reload() 
+    } else {
+      localStorage.removeItem('foo') 
+    }
     this.idresto = Number(localStorage.getItem('id'));
     this.getAllPlate();
   }

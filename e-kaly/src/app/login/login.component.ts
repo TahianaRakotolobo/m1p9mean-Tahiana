@@ -39,6 +39,17 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('name', this.userId);
       localStorage.setItem('usertype', usertype);
 
+      if(usertype == 'Admin'){
+        // component -> deliveryassignement
+        this.router.navigateByUrl('/assignment');
+      }
+      if(usertype == 'Restaurant'){
+        this.router.navigateByUrl('/allplates');
+      }
+      if(usertype == 'Livreur'){
+        // component -> assignment
+        this.router.navigateByUrl('/myassignment');
+      }
       this.router.navigateByUrl('/accueil');
     };
     const error = (response: any = []) => {
