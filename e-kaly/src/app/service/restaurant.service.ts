@@ -57,4 +57,14 @@ export class RestaurantService {
     }
     return this.http.put(urlresto, input);
   }
+
+  afficher(id:number, visibility:boolean){
+    var urlresto = base_url + 'visibilitychange';
+    let input = {
+      id : id,
+      visibility : visibility
+    }
+    return this.http.put(urlresto, input);
+  }
+
 }

@@ -1,4 +1,5 @@
 const environnement = require('./../environnement/environnement');
+const Delivery = require('./classes/Delivery');
 function getNb(phrase){
     let words = phrase.split(" ");
     var listenb = [];
@@ -12,26 +13,12 @@ function getNb(phrase){
     return listenb;
 }
 
-function geoFind(callback) {
-    function success(position) {
-        const latitude  = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        callback(null, position);
-    } 
-
-    function error() {
-        var err = 'Unable to retrieve your location';
-        console.log(err);
-        callback(err);
+function newDelivery(orders, iddeliveryman){
+    var deliveries = new Array();
+    for(var i = 0; i<orders.length; i++){
+        deliveries[i] = new Delivery(orders[i].id, iddeliveryman);
     }
-
-    if (!navigator.geolocation) {
-        console.log('Geolocation is not supported by your browser');
-    } else {
-        console.log('Locating…');
-        navigator.geolocation.getCurrentPosition(success, error);
-    }
-
+    return deliveries;
 }
 
-module.exports = { getNb, geoFind };
+module.exports = { getNb, newDelivery };

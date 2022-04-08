@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var sha256 = require('js-sha256');
 var User = require('./src/classes/User.js');
 var Plate = require('./src/classes/Plate.js');
+var utils = require('./src/utils.js');
 var environnement = require('./environnement/environnement.js');
 var mongoClient = require('mongodb').MongoClient;
 var app = express();
@@ -28,6 +29,7 @@ mongoClient.connect(connectionString, {
     const connectedCollection = db.collection('connected');
     const plateCollection = db.collection('plate');
     const orderCollection = db.collection('order');
+    const deliveryCollection = db.collection('delivery');
     
     // ========================
     // Middlewares
@@ -275,7 +277,7 @@ mongoClient.connect(connectionString, {
 
     // nouveau plat -> restaurants
     app.post('/newplate', function(req, res){
-        var newplate = new Plate(req.body.name, req.body.price, req.body.benefits, true, Number(req.body.idresto));
+        var newplate = new Plate(req.body.name, Number(req.body.price), Number(req.body.benefits), true, Number(req.body.idresto));
         plateCollection.insertOne(newplate)
         .then(result => {
             console.log('Insertion réussie');
@@ -304,7 +306,7 @@ mongoClient.connect(connectionString, {
     // liste de tous les plats d'un restaurant -> restaurants
     app.post('/plates', function(req, res){
         plateCollection.find(
-            { 'idresto' : Number(req.query.idresto) },
+            { 'idresto' : Number(req.body.idresto) },
             { _id : 0, id : 1, name : 1, price : 1 , visibility : 1 }
         ).toArray()
         .then(plates => {
@@ -322,13 +324,7 @@ mongoClient.connect(connectionString, {
             { id: Number(req.body.id) },
             {
                 $set: {
-                    visibility: {
-                        $switch: [
-                            { case: { $eq: [ "$visibility", true ]}, then: false },
-                            { case: { $eq: [ "$visibility", false ]}, then: true }
-                        ],
-                        default: false
-                    } 
+                    visibility: req.body.visibility
                 }
             },
             {
@@ -344,13 +340,10 @@ mongoClient.connect(connectionString, {
         orderCollection.aggregate([
             { $lookup: { from: 'user', localField: 'idclient', foreignField: 'id', as: 'clientdetails' } },
             { $unwind: "$clientdetails" },
-            { $lookup: { from: 'user', localField: 'idresto', foreignField: 'id', as: 'restodetails' } },
-            { $unwind: "$restodetails" },
             { $match: { 'idresto' : Number(req.body.idresto), 'state' : 'commande' } },
-            { $group: { _id: { "client": "$clientdetails", "resto": "$restodetails" } } }
+            { $group: { _id: { "client": "$clientdetails" } } }
         ]).toArray()
         .then(plates => {
-            // console.log(plates);
             res.status(200).json({
                 status: 'success',
                 data: plates,
@@ -402,9 +395,102 @@ mongoClient.connect(connectionString, {
         .catch(error => console.error(error));
     });
 
-    // bénéfices ->restaurants
+    // bénéfices -> restaurants
     app.get('/benefits-resto', function(req, res){
 
+    });
+
+    // liste des commandes prêtes -> admin
+    app.get('/readyorders', function(req, res){
+        orderCollection.aggregate([
+            { $lookup: { from: 'user', localField: 'idclient', foreignField: 'id', as: 'clientdetails' } },
+            { $unwind: "$clientdetails" },
+            { $lookup: { from: 'user', localField: 'idresto', foreignField: 'id', as: 'restodetails' } },
+            { $unwind: "$restodetails" },
+            { $match: { 'state' : 'pret' } },
+            { $group: { _id: { "client": "$clientdetails", "resto": "$restodetails" } } }
+        ]).toArray()
+        .then(plates => {
+            // console.log(plates);
+            res.status(200).json({
+                status: 'success',
+                data: plates,
+            });
+        })
+        .catch(error => console.error(error));
+    });
+
+    // liste des livreurs -> admin
+    app.get('/deliverymen', function(req, res){
+        userCollection.aggregate([
+            { $match: { 'usertype' : 'Livreur' } }
+        ]).toArray()
+        .then(user => {
+            // console.log(user);
+            res.status(200).json({
+                status: 'success',
+                data: user,
+            });
+        })
+        .catch(error => console.error(error));
+    });
+
+    // nb commandes attribuées à un livreur -> admin
+    app.post('/nborders', function(req, res){
+        orderCollection.aggregate([
+            { $lookup: { from: 'delivery', localField: 'id', foreignField: 'idorder', as: 'attribution' } },
+            { $match: { 'state' : 'a livrer', 'attribution.iddeliveryman' : req.body.iddeliveryman } },
+            { $group: { _id: { "idclient": "$idclient", "idresto": "$idresto" } } },
+            { $count: "iddeliveryman" }
+        ]).toArray()
+        .then(plates => {
+            console.log(plates);
+            res.status(200).json({
+                status: 'success',
+                data: plates,
+            });
+        })
+        .catch(error => console.error(error));
+    });
+
+    // attribution d'une livraison -> admin
+    app.post('/deliver', function(req, res){
+        var order = new Array();
+        // order = req.body.orders;
+        const options = { ordered: true };
+        orderCollection.aggregate([
+            { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+            { $lookup: { from: 'user', localField: 'idclient', foreignField: 'id', as: 'clientdetails' } },
+            { $unwind: "$clientdetails" },
+            { $match: 
+                { 
+                    'idclient' : Number(req.body.idclient), 
+                    'idresto' : Number(req.body.idresto), 
+                    'state': 'pret' 
+                }
+            }
+        ]).toArray()
+        .then(plates => {
+            // console.log(plates);
+            order = utils.newDelivery(plates, Number(req.body.iddeliveryman));
+            deliveryCollection.insertMany(order, options)
+            .then(result => {
+                console.log('Insertion réussie');
+                // res.redirect('/');
+
+                res.status(200).json({
+                    status: 'success',
+                    data: result,
+                });
+            })
+            .catch(error => console.error(error));
+
+            // res.status(200).json({
+            //     status: 'success',
+            //     data: plates,
+            // });
+        })
+        .catch(error => console.error(error));
     });
 
     // changer l'état d'une commande à en cours de livraison -> livreur

@@ -16,6 +16,12 @@ export class AccueilComponent implements OnInit {
 
   ngOnInit(): void {
     // console.log("id", user.id);
+    if (!localStorage.getItem('foo')) { 
+      localStorage.setItem('foo', 'no reload') 
+      location.reload() 
+    } else {
+      localStorage.removeItem('foo') 
+    }
     this.getAllResto();
   }
 

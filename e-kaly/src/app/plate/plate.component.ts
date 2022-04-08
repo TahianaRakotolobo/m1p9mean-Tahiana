@@ -69,7 +69,7 @@ export class PlateComponent implements OnInit {
     for(let i=0; i<this.list.length; i++){
       // console.log(this.nb[i]);
       if(this.nb[i]>0){
-        var oneplate = new Order(this.list[i].id, this.nb[i],Number(localStorage.getItem('id')), this.idresto, new Date(), 'commande');
+        var oneplate = new Order(this.list[i].id, this.nb[i],Number(localStorage.getItem('id')), Number(this.idresto), new Date(), 'commande');
         this.order[iorder] = oneplate;
         iorder++;
       }

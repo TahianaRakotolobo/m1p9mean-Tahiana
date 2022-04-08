@@ -15,6 +15,8 @@ import { AllplatesComponent } from './allplates/allplates.component';
 import { OrderedComponent } from './ordered/ordered.component';
 import { ClientordersComponent } from './clientorders/clientorders.component';
 import { OrderdetailsComponent } from './orderdetails/orderdetails.component';
+import { DeliveryassignmentComponent } from './deliveryassignment/deliveryassignment.component';
+import { AssignmentComponent } from './assignment/assignment.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { OrderdetailsComponent } from './orderdetails/orderdetails.component';
     AllplatesComponent,
     OrderedComponent,
     ClientordersComponent,
-    OrderdetailsComponent
+    OrderdetailsComponent,
+    DeliveryassignmentComponent,
+    AssignmentComponent
   ],
   imports: [
     BrowserModule,

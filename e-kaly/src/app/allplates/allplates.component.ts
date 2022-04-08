@@ -46,6 +46,17 @@ export class AllplatesComponent implements OnInit {
     this.restoservice.getAllPlate(this.idresto).subscribe(success, error);
   }
 
+  changevisibility(id:any, visibility:boolean){
+    const success = (response: any = []) => {
+      console.log("response", response);
+      location.reload();
+    };
+    const error = (response: any = []) => {
+      console.log("Erreur", response);
+    }
+    this.restoservice.afficher(id, visibility).subscribe(success, error);
+  }
+
   valider(){}
 
 }
