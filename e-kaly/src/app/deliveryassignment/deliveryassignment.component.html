@@ -3,15 +3,23 @@
         <div class="tab-content" id="v-pills-tabContent">
             <h5>Commandes</h5>
             <div class="card-deck">
-                <div *ngFor="let element of list" class="card border-dark mb-3" style="max-width: 250px; min-width: 200px;">
+                <div *ngFor="let element of list" class="card border-dark mb-3" style="max-width: 500px; min-width: 200px;">
                     <!-- <a [routerLink]="['/orderdetails']" [queryParams]="{idclient: element._id.client.id}"> -->
                     <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
+                    <div class="card-body" style="text-align: center;padding-left: 5px;padding-right:5px">
                         <p class="card-text">Nom du client: {{element._id.client.name}}</p>
-                        <p class="card-text">Adresse du client: {{element._id.client.address}}</p>
+                        <p class="card-text">Adresse de livraison: {{element._id.place}}</p>
                         <p class="card-text">Nom du resto: {{element._id.resto.name}}</p>
                         <p class="card-text">Adresse du resto: {{element._id.resto.address}}</p>
+
+                        <label for="exampleFormControlSelect1">Livreur</label>
+                        <select style="margin-left: 5px; margin-right:5px" *ngFor="let deliveryman of deliverymen" [(ngModel)]="idman" name="idman" id="idman">
+                            <option value="{{deliveryman.id}}">{{deliveryman.name}}</option>
+                        </select>
+                        <button class="btn btn-outline-success my-2 my-sm-0" (click)="assign(element._id.client.id, element._id.resto.id)">Attribuer</button>
+                           
                     </div>
+                    
                     <!-- </a> -->
                 </div>
             </div>
@@ -33,7 +41,7 @@
                 <div id="test{{i}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
                         <p>Adresse livreur: {{deliveryman.address}}</p>
-                        <p>Nombre de livraison dans la journée: </p>
+                        <p>Nombre de livraison dans la journée: {{nb}}</p>
                     </div>
                 </div>
             </div>

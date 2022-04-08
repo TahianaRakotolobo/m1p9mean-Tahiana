@@ -12,6 +12,7 @@ export class DeliveryassignmentComponent implements OnInit {
   list = new Array();
   deliverymen = new Array();
   nb = 0;
+  idman = -1;
 
   constructor(private router: Router, private adminservice:AdminService) { }
 
@@ -60,6 +61,19 @@ export class DeliveryassignmentComponent implements OnInit {
       // this.message = 'erreur';
     }
     this.adminservice.getNbDelivery(id).subscribe(success, error);
+  }
+
+  assign(idclient:number, idresto:number){
+    const success = (response: any = []) => {
+      console.log("response", response);
+      this.nb = response.data;
+      location.reload();
+    };
+    const error = (response: any = []) => {
+      console.log("Erreur", response);
+      // this.message = 'erreur';
+    }
+    this.adminservice.savedelivery(idclient, idresto, this.idman).subscribe(success, error);
   }
 
 }

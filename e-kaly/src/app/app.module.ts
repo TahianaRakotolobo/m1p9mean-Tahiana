@@ -17,6 +17,7 @@ import { ClientordersComponent } from './clientorders/clientorders.component';
 import { OrderdetailsComponent } from './orderdetails/orderdetails.component';
 import { DeliveryassignmentComponent } from './deliveryassignment/deliveryassignment.component';
 import { AssignmentComponent } from './assignment/assignment.component';
+import { DeliverydetailsComponent } from './deliverydetails/deliverydetails.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AssignmentComponent } from './assignment/assignment.component';
     ClientordersComponent,
     OrderdetailsComponent,
     DeliveryassignmentComponent,
-    AssignmentComponent
+    AssignmentComponent,
+    DeliverydetailsComponent
   ],
   imports: [
     BrowserModule,

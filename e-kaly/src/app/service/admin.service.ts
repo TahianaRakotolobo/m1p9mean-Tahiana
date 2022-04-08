@@ -26,4 +26,14 @@ export class AdminService {
     }
     return this.http.post(url, input);
   }
+
+  savedelivery(idclient:number, idresto:number, idman:number){
+    var url = base_url + 'deliver';
+    let input = {
+      idclient : idclient,
+      idresto : idresto,
+      iddeliveryman : idman
+    }
+    return this.http.post(url, input);
+  }
 }

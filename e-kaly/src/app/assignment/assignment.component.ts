@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DeliveryService } from '../service/delivery.service';
 
 @Component({
   selector: 'app-assignment',
@@ -7,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssignmentComponent implements OnInit {
 
-  constructor() { }
+  list = new Array();
+
+  constructor(private router: Router, private deliveryservice:DeliveryService) { }
 
   ngOnInit(): void {
     if (!localStorage.getItem('foo')) { 
@@ -16,6 +20,19 @@ export class AssignmentComponent implements OnInit {
     } else {
       localStorage.removeItem('foo') 
     }
+    this.getOrder();
+  }
+
+  getOrder(){
+    const success = (response: any = []) => {
+      console.log("response", response);
+      this.list = response.data;
+    };
+    const error = (response: any = []) => {
+      console.log("Erreur", response);
+      // this.message = 'erreur';
+    }
+    this.deliveryservice.getAllOrders(Number(localStorage.getItem('id'))).subscribe(success, error);
   }
 
 }

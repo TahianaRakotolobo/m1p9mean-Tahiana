@@ -11,6 +11,7 @@ import { ClientordersComponent } from './clientorders/clientorders.component';
 import { OrderdetailsComponent } from './orderdetails/orderdetails.component';
 import { DeliveryassignmentComponent } from './deliveryassignment/deliveryassignment.component';
 import { AssignmentComponent } from './assignment/assignment.component';
+import { DeliverydetailsComponent } from './deliverydetails/deliverydetails.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'accueil', pathMatch: 'full' },
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path: 'clientorder', component: ClientordersComponent },
   { path: 'orderdetails', component: OrderdetailsComponent },
   { path: 'assignment', component: DeliveryassignmentComponent },
-  { path: 'myassignment', component: AssignmentComponent }
+  { path: 'myassignment', component: AssignmentComponent },
+  { path: 'deliverydetails', component: DeliverydetailsComponent }
 ];
 
 @NgModule({
