@@ -58,7 +58,7 @@ mongoClient.connect(connectionString, {
     // ========================
     // Listen
     // ========================
-    app.listen(process.env.PORT, function(){
+    app.listen(3000, function(){
         console.log('Server running at http://'+ hostname + ':' + port + '/');
     });
 
