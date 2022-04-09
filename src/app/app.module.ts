@@ -19,6 +19,8 @@ import { DeliveryassignmentComponent } from './deliveryassignment/deliveryassign
 import { AssignmentComponent } from './assignment/assignment.component';
 import { DeliverydetailsComponent } from './deliverydetails/deliverydetails.component';
 import { ResearchComponent } from './research/research.component';
+import { BenefitsrestoComponent } from './benefitsresto/benefitsresto.component';
+import { BenefitsadminComponent } from './benefitsadmin/benefitsadmin.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { ResearchComponent } from './research/research.component';
     DeliveryassignmentComponent,
     AssignmentComponent,
     DeliverydetailsComponent,
-    ResearchComponent
+    ResearchComponent,
+    BenefitsrestoComponent,
+    BenefitsadminComponent
   ],
   imports: [
     BrowserModule,

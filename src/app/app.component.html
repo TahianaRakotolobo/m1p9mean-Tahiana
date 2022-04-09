@@ -30,12 +30,12 @@
                 <a class="nav-link" href="/allplates" role="tab" aria-selected="true">Menu</a>
                 <a class="nav-link" href="/newplate" role="tab" aria-selected="false">Nouveau plat</a>
                 <a class="nav-link" href="/clientorder" role="tab" aria-selected="false">Commande</a>
-                <a class="nav-link" href="" role="tab" aria-selected="false">Bénéfices</a>
+                <a class="nav-link" href="/restobenefits" role="tab" aria-selected="false">Bénéfices</a>
                 <!-- <a class="nav-link" (click)="signout()" role="tab" aria-selected="false">Se deconnecter</a> -->
             </div>
             <div *ngSwitchCase="'Admin'">
                 <a class="nav-link" href="/assignment" role="tab" aria-selected="true">Assignation</a>
-                <a class="nav-link" href="" role="tab" aria-selected="false">Bénéfices</a>
+                <a class="nav-link" href="/adminbenefits" role="tab" aria-selected="false">Bénéfices</a>
                 <!-- <a class="nav-link" (click)="signout()" role="tab" aria-selected="false">Se deconnecter</a> -->
             </div>
             <div *ngSwitchCase="'Livreur'">
@@ -44,9 +44,8 @@
             </div>
             <div *ngSwitchDefault>
                 <a class="nav-link" href="/accueil" role="tab" aria-selected="true">Restaurant</a>
-                <a class="nav-link" href="" role="tab" aria-selected="false">Plat</a>
+                <!-- <a class="nav-link" href="" role="tab" aria-selected="false">Plat</a> -->
                 <a class="nav-link" href="/ordered" role="tab" aria-selected="false">Commande</a>
-                <a class="nav-link" id="v-pills-settings-tab" href="" role="tab" aria-selected="false">Settings</a>
                 <!-- <div *ngIf="token == ''; then SUC else FAIL">
                 </div>
                 <ng-template #SUC >
