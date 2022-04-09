@@ -7,12 +7,13 @@ class User{
     //     this.usertype = '';
     // }
 
-    constructor(name, password, address, usertype){
+    constructor(name, password, address, phone, usertype){
         this.id = 1;
         this.name = name;
         this.password = sha256(password);
         this.address = address;
         this.usertype = usertype;
+        this.phone = phone;
     }
 
     createtoken(id){

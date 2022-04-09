@@ -29,7 +29,7 @@ export class UserService {
     // console.log('env', user);
   }
 
-  signup(username:string, password:string, usertype:string, address:string){
+  signup(username:string, password:string, usertype:string, address:string, phone:string){
     // console.log(username + ' ' + password + ' ' + usertype + ' ' + address);
     var urlregister = base_url+'signup';
     console.log(urlregister);
@@ -37,7 +37,8 @@ export class UserService {
       username : username,
       password : password,
       usertype : usertype,
-      address : address
+      address : address,
+      phone : phone
     }
     console.log(input);
     return this.http.post(urlregister, input);
@@ -54,5 +55,13 @@ export class UserService {
       idresto : idresto,
     }
     return this.http.post(urlresto, input);
+  }
+
+  research(word:string){
+    var urlsearch = base_url + 'menu';
+    let input = {
+      word : word,
+    }
+    return this.http.post(urlsearch, input);
   }
 }

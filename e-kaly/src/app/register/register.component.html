@@ -2,15 +2,52 @@
   <h1>Register</h1>
   <p style="color:red">{{message}}</p>
   <form>
-      Username: <input [(ngModel)]="username" name="username" type="text">
-      Password: <input [(ngModel)]="password" name="password" type="password">
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label">Nom d'utilisateur: </label>
+      <div class="col-sm-6">
+        <input class="form-control" [(ngModel)]="username" name="username" type="text">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label">Mot de passe: </label>
+      <div class="col-sm-6">
+        <input class="form-control" [(ngModel)]="password" name="password" type="password">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="usertype" class="col-sm-2 col-form-label">Type de compte: </label>
+      <div class="col-sm-6">
+        <select [(ngModel)]="usertype" name="usertype" id="usertype">
+          <option value="Client" selected>Client</option>
+          <option value="Restaurant">Restaurant</option>
+          <option value="Livreur">Livreur</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label">Adresse: </label>
+      <div class="col-sm-6">
+        <input class="form-control" [(ngModel)]="address" name="address" type="text">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label">Téléphone: </label>
+      <div class="col-sm-6">
+        <input class="form-control" [(ngModel)]="phone" name="phone" type="text">
+      </div>
+    </div>
+
+
+      <!-- Nom d'utilisateur: <input class="form-control" [(ngModel)]="username" name="username" type="text">
+      Mot de passe: <input [(ngModel)]="password" name="password" type="password">
       <label for="usertype">Account type: </label>
       <select [(ngModel)]="usertype" name="usertype" id="usertype">
           <option value="Client" selected>Client</option>
           <option value="Restaurant">Restaurant</option>
           <option value="Livreur">Livreur</option>
       </select>
-      Address: <input [(ngModel)]="address" name="address" type="text">
+      Adresse: <input [(ngModel)]="address" name="address" type="text">
+      Téléphone: <input [(ngModel)]="phone" name="phone" type="text"> -->
       <button type="button" (click)="signup()">S'inscrire</button>
   </form>
 </div>

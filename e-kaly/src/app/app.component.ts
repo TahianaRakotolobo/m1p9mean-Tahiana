@@ -14,11 +14,12 @@ export class AppComponent {
   name = localStorage.getItem('name');
   usertype = localStorage.getItem('usertype');
   title = 'e-kaly';
+  search = '';
 
   constructor(private router: Router) { }
 
   signout(){
-    localStorage.setItem('id', '0');
+    localStorage.setItem('id', '-1');
     localStorage.setItem('token', '');
     localStorage.setItem('name', '');
     localStorage.setItem('usertype', '');

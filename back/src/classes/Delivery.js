@@ -10,7 +10,8 @@ class Delivery{
         this.id = 0;
         this.idorder = id;
         this.iddeliveryman = iddeliveryman;
-        this.state = 'a livrer';
+        // this.state = 'a livrer';
+        this.date = new Date();
     }
 
 }

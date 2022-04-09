@@ -65,6 +65,9 @@ export class PlateComponent implements OnInit {
   }
 
   valider(){
+    if(localStorage.getItem('id')==null || Number(localStorage.getItem('id'))==-1){
+      this.router.navigateByUrl('/login');
+    }
     console.log(this.nb);
     let iorder = 0;
     for(let i=0; i<this.list.length; i++){

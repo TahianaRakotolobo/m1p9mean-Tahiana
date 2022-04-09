@@ -13,6 +13,7 @@ export class RegisterComponent implements OnInit {
   password = '';
   usertype = '';
   address = '';
+  phone = '';
   message = '';
 
   constructor(private router: Router, private userservice:UserService) { }
@@ -50,7 +51,7 @@ export class RegisterComponent implements OnInit {
       console.log("Erreur", response);
       this.message = 'erreur';
     }
-    this.userservice.signup(this.username, this.password, this.usertype, this.address).subscribe(success, error);
+    this.userservice.signup(this.username, this.password, this.usertype, this.address, this.phone).subscribe(success, error);
 
     // this.userservice.signup(this.username, this.password, this.usertype, this.address);
   }

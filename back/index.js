@@ -76,7 +76,7 @@ mongoClient.connect(connectionString, {
                 error: 'form cannot be empty',
             });
         }
-        var newuser = new User(req.body.username, req.body.password, req.body.address, req.body.usertype);
+        var newuser = new User(req.body.username, req.body.password, req.body.address, req.body.phone, req.body.usertype);
         userCollection.insertOne(newuser)
         .then(result => {
             console.log('Insertion réussie');
@@ -145,7 +145,7 @@ mongoClient.connect(connectionString, {
             ]
         })
         .then(result => {
-            environnement.token = new User(result.name, result.password, result.address, result.usertype).createtoken(result.id);
+            environnement.token = new User(result.name, result.password, result.address, result.phone, result.usertype).createtoken(result.id);
             environnement.currentuser = result.id;
             // var currentdate = Date.now().toString();
             let userconnected = {
@@ -344,6 +344,7 @@ mongoClient.connect(connectionString, {
             { $group: { _id: { "client": "$clientdetails" } } }
         ]).toArray()
         .then(plates => {
+            // console.log(plates);
             res.status(200).json({
                 status: 'success',
                 data: plates,
@@ -381,7 +382,7 @@ mongoClient.connect(connectionString, {
     // changer l'état d'une commande à prêt à livrer -> restaurant
     app.put('/statechange-resto', function(req, res){
         orderCollection.updateMany(
-            { idresto: Number(req.body.idresto), idclient: Number(req.body.idclient) },
+            { idresto: Number(req.body.idresto), idclient: Number(req.body.idclient), state: 'commande' },
             {
                 $set: {
                     state: 'pret'
@@ -408,7 +409,7 @@ mongoClient.connect(connectionString, {
             { $lookup: { from: 'user', localField: 'idresto', foreignField: 'id', as: 'restodetails' } },
             { $unwind: "$restodetails" },
             { $match: { 'state' : 'pret' } },
-            { $group: { _id: { "client": "$clientdetails", "resto": "$restodetails" } } }
+            { $group: { _id: { "client": "$clientdetails", "resto": "$restodetails", "place" : "$place" } } }
         ]).toArray()
         .then(plates => {
             // console.log(plates);
@@ -437,6 +438,7 @@ mongoClient.connect(connectionString, {
 
     // nb commandes attribuées à un livreur -> admin
     app.post('/nborders', function(req, res){
+        var nb = 0;
         orderCollection.aggregate([
             { $lookup: { from: 'delivery', localField: 'id', foreignField: 'idorder', as: 'attribution' } },
             { $match: { 'state' : 'a livrer', 'attribution.iddeliveryman' : req.body.iddeliveryman } },
@@ -444,11 +446,15 @@ mongoClient.connect(connectionString, {
             { $count: "iddeliveryman" }
         ]).toArray()
         .then(plates => {
-            console.log(plates);
+            if(plates.length > 0){
+                nb = plates[0].iddeliveryman;
+            }
+            // console.log(nb);
             res.status(200).json({
                 status: 'success',
-                data: plates,
+                data: nb,
             });
+            
         })
         .catch(error => console.error(error));
     });
@@ -456,7 +462,6 @@ mongoClient.connect(connectionString, {
     // attribution d'une livraison -> admin
     app.post('/deliver', function(req, res){
         var order = new Array();
-        // order = req.body.orders;
         const options = { ordered: true };
         orderCollection.aggregate([
             { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
@@ -476,54 +481,112 @@ mongoClient.connect(connectionString, {
             deliveryCollection.insertMany(order, options)
             .then(result => {
                 console.log('Insertion réussie');
-                // res.redirect('/');
-
-                res.status(200).json({
-                    status: 'success',
-                    data: result,
-                });
+                orderCollection.updateMany(
+                    { idresto: Number(req.body.idresto), idclient: Number(req.body.idclient), state: 'pret' },
+                    {
+                        $set: {
+                            state: 'a livrer'
+                        }
+                    },
+                    {
+                        upsert: true
+                    }
+                )
+                .then(resultdata => res.json('Success'))
+                .catch(error => console.error(error));
             })
             .catch(error => console.error(error));
-
-            // res.status(200).json({
-            //     status: 'success',
-            //     data: plates,
-            // });
         })
         .catch(error => console.error(error));
     });
 
-    // changer l'état d'une commande à en cours de livraison -> livreur
-    app.put('/statechange-delivery', function(req, res){
-        orderCollection.findOneAndUpdate(
-            { id: Number(req.body.id) },
-            {
-                $set: {
-                    state: 'en cours'
-                }
-            },
-            {
-                upsert: true
-            }
-        )
-        .then(result => res.json('Success'))
+    // liste commandes à livrer -> livreur
+    app.post('/ordered-resto-client', function(req, res){
+        orderCollection.aggregate([
+            { $lookup: { from: 'user', localField: 'idclient', foreignField: 'id', as: 'clientdetails' } },
+            { $unwind: "$clientdetails" },
+            { $lookup: { from: 'user', localField: 'idresto', foreignField: 'id', as: 'restodetails' } },
+            { $unwind: "$restodetails" },
+            { $lookup: { from: 'delivery', localField: 'id', foreignField: 'idorder', as: 'deliverydetails' } },
+            { $unwind: "$deliverydetails" },
+            { $match: { 'deliverydetails.iddeliveryman' : Number(req.body.iddeliveryman), $or: [{'state' : 'a livrer'}, {'state' : 'en cours'}] } },
+            { $group: { _id: { "client": "$clientdetails", "resto": "$restodetails", "delivery": "$deliverydetails" } } }
+        ]).toArray()
+        .then(plates => {
+            res.status(200).json({
+                status: 'success',
+                data: plates,
+            });
+        })
         .catch(error => console.error(error));
     });
 
-    // changer l'état d'une commande à en livré -> livreur
-    app.put('/statechange-delivered', function(req, res){
-        orderCollection.findOneAndUpdate(
-            { id: Number(req.body.id) },
+    // détails commandes -> livreurs
+    app.post('/order-details-delivery', function(req, res){
+        orderCollection.aggregate([
+            { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+            { $lookup: { from: 'user', localField: 'idclient', foreignField: 'id', as: 'clientdetails' } },
+            { $lookup: { from: 'user', localField: 'idresto', foreignField: 'id', as: 'restodetails' } },
+            { $lookup: { from: 'delivery', localField: 'id', foreignField: 'idorder', as: 'deliverydetails' } },
+            { $match: 
+                { 
+                    'idclient' : Number(req.body.idclient), 
+                    'idresto' : Number(req.body.idresto), 
+                    $or: [{'state' : 'a livrer'}, {'state' : 'en cours'}] 
+                }
+            }
+        ]).toArray()
+        .then(plates => {
+            // console.log(plates);
+            res.status(200).json({
+                status: 'success',
+                data: plates,
+            });
+        })
+        .catch(error => console.error(error));
+    });
+
+    // changer l'état d'une commande à en cours de livraison ou livrée -> livreur
+    app.put('/statechange-delivery', function(req, res){
+        orderCollection.updateMany(
+            { idresto: Number(req.body.idresto), idclient: Number(req.body.idclient), $or: [{'state' : 'a livrer'}, {'state' : 'en cours'}] },
             {
                 $set: {
-                    state: 'livre'
+                    state: req.body.state
                 }
             },
             {
                 upsert: true
             }
         )
-        .then(result => res.json('Success'))
+        .then(result => {
+            res.json('Success');
+        })
+        .catch(error => console.error(error));
+    });
+
+    app.post('/research', function(req, res){
+        plateCollection.aggregate(
+            [
+                {
+                    $project:
+                    {
+                        comparisonResult: { $strcasecmp: [ "$name", req.body.word ] }
+                    },
+                    $match: 
+                    {
+                        "visibility" : true
+                    }
+                }
+            ]
+        ).toArray()
+        .then(plates => {
+            console.log(plates);
+            res.status(200).json({
+                status: 'success',
+                data: plates,
+            });
+        })
         .catch(error => console.error(error));
     });
 
