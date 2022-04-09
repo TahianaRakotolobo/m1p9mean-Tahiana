@@ -1,0 +1,120 @@
+body a{
+    color: green;
+}
+body{
+    background: green;
+}
+.container{
+    background: white;
+}
+#apropos{
+	background-color: green;
+	color: white;
+}
+#maincontainer{
+	padding: 12px 10px 12px 10px;
+}
+.navbar{
+    border-style: solid;
+    border-color: green;
+}
+.navbar a{
+    color: green;
+}
+.description{
+	margin: 25px 50px 25px 50px;
+}
+.description.description{
+    text-align: center;
+}
+.description.descBody{
+    font-family: 'PT Serif';
+    color: black;
+}
+.card{
+	margin-top: 10px;
+	margin-bottom: 60px;
+    color: black;
+    text-align: center;
+    padding: 10%;
+}
+.card.p{
+    padding: 60px;
+}
+.imageListe{
+    text-align: center;
+}
+.page{
+	padding: 60px;
+}
+.page a{
+    margin-left: 25px;
+    margin-right: 25px;
+}
+.page button{
+    border-radius: 50px;
+}
+#footer{
+	background-color: green;
+	color: white;
+	padding: 60px;
+}
+.login
+{
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+	width:400px;
+	padding:30px;
+	box-sizing: border-box;
+	/* background: rgb(63, 94, 161); */
+	background: green;
+	color:white;
+	border-radius:50px;
+	font-size:20px;
+}
+.login input
+{
+	margin-bottom:20px;
+	border-radius:50px;
+	color:white;
+}
+.login input[type="submit"]
+{
+	color:black;
+}
+/* .login input[type="submit"]:hover
+{
+	background:white;
+	color:black;
+} */
+.login a
+{
+	color:white;
+}
+.inscri
+{
+	position: absolute;
+	top:25%;
+	left:45%;
+	transform: translate(-50%,-50%);
+	margin-left:80px;
+	margin-top:170px;
+	padding:20px;
+	box-sizing: border-box;
+	background: green;
+	border-radius:50px;
+}
+.inscri input
+{
+	margin-bottom:20px;
+	border-radius:50px;
+}
+.inscri a{
+    color:white;
+}
+/* .menu{
+    border-color: green;
+    border-style: groove;
+} */

@@ -1,0 +1,30 @@
+<div style="margin: 5px">
+    <p>Nom du client: {{list[0].clientdetails[0].name}}</p>
+    <p>Contact client: {{list[0].clientdetails[0].phone}}</p>
+    <p>Restaurant: {{list[0].restodetails[0].name}}</p>
+    <p>Contact restaurant: {{list[0].restodetails[0].phone}}</p>
+    <p>Lieu de livraison: {{list[0].place}}</p>
+    <p>Etat: {{list[0].state}}</p>
+
+    <div *ngIf="list[0].state == 'a livrer'; then SUC else FAIL">
+    </div>
+    <ng-template #SUC >
+        <button class="btn btn-outline-success my-2 my-sm-0" (click)="delivering('en cours')">Prendre</button>
+    </ng-template>
+    <ng-template #FAIL >
+        <button class="btn btn-outline-success my-2 my-sm-0" (click)="delivering('livre')">Livré?</button>
+    </ng-template>
+</div>
+
+<div class="tab-content" id="v-pills-tabContent">
+    <div class="card-deck">
+        <div *ngFor="let element of list" class="card border-dark mb-3" style="max-width: 250px; min-width: 200px;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{element.orderdetails[0].name}}</h5>
+                <p class="card-text">Prix: {{element.orderdetails[0].price}} Ar</p>
+                <p class="card-text">Quantité: {{element.nb}}</p>
+            </div>
+        </div>
+    </div>
+</div>

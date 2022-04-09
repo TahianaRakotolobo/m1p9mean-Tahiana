@@ -1,0 +1,68 @@
+<nav class="navbar navbar-light bg-light" style="position: sticky;">
+    <a class="navbar-brand" href="#">
+        <img src="/./assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+        E-Kaly
+    </a>
+    <div *ngIf="token == ''; then SUC else FAIL">
+    </div>
+    <ng-template #SUC >
+        <div class="my-2 my-lg-0">
+            <a type="button" class="btn btn-outline-success mr-sm-2" href="/login">Se connecter</a>
+            <a type="button" class="btn btn-outline-success mr-sm-2" href="/register">S'inscrire</a>
+        </div>
+    </ng-template>
+    <ng-template #FAIL >
+        <div class="my-2 my-lg-0">
+            <a type="button" class="btn btn-outline-success mr-sm-2" (click)="signout()">Se deconnecter</a>
+        </div>
+    </ng-template>
+</nav>
+<div class="row">
+    <div class="col-3 bd-sidebar" style="position: sticky;">
+      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <form class="form-inline my-2 my-lg-0" method="get" action="/research">
+          <input [(ngModel)]="search" name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        {{usertype}}
+        <container-element [ngSwitch]="usertype">
+            <div *ngSwitchCase="'Restaurant'">
+                <a class="nav-link" href="/allplates" role="tab" aria-selected="true">Menu</a>
+                <a class="nav-link" href="/newplate" role="tab" aria-selected="false">Nouveau plat</a>
+                <a class="nav-link" href="/clientorder" role="tab" aria-selected="false">Commande</a>
+                <a class="nav-link" href="" role="tab" aria-selected="false">Bénéfices</a>
+                <!-- <a class="nav-link" (click)="signout()" role="tab" aria-selected="false">Se deconnecter</a> -->
+            </div>
+            <div *ngSwitchCase="'Admin'">
+                <a class="nav-link" href="/assignment" role="tab" aria-selected="true">Assignation</a>
+                <a class="nav-link" href="" role="tab" aria-selected="false">Bénéfices</a>
+                <!-- <a class="nav-link" (click)="signout()" role="tab" aria-selected="false">Se deconnecter</a> -->
+            </div>
+            <div *ngSwitchCase="'Livreur'">
+                <a class="nav-link" href="/myassignment" role="tab" aria-selected="true">Mes assignations</a>
+                <!-- <a class="nav-link" (click)="signout()" role="tab" aria-selected="false">Se deconnecter</a> -->
+            </div>
+            <div *ngSwitchDefault>
+                <a class="nav-link" href="/accueil" role="tab" aria-selected="true">Restaurant</a>
+                <a class="nav-link" href="" role="tab" aria-selected="false">Plat</a>
+                <a class="nav-link" href="/ordered" role="tab" aria-selected="false">Commande</a>
+                <a class="nav-link" id="v-pills-settings-tab" href="" role="tab" aria-selected="false">Settings</a>
+                <!-- <div *ngIf="token == ''; then SUC else FAIL">
+                </div>
+                <ng-template #SUC >
+                    <a type="button" class="btn btn-outline-success mr-sm-2" href="/login">Se connecter</a>
+                    <a type="button" class="btn btn-outline-success mr-sm-2" href="/register">S'inscrire</a>
+                </ng-template>
+                <ng-template #FAIL >
+                    <a class="nav-link" (click)="signout()" role="tab" aria-selected="false">Se deconnecter</a>
+                </ng-template> -->
+            </div>
+        </container-element>
+        <p>RAKOTOLOBO Tahiana</p>
+        <p>ETU001001</p>
+      </div>
+    </div>
+    <div class="col-9" style="overflow-y: scroll;max-height: 550px;">
+        <router-outlet></router-outlet>
+    </div>
+</div>

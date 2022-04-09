@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-6" style="overflow-y: scroll;max-height: 500px;">
+        <div class="tab-content" id="v-pills-tabContent">
+            <h5>Plats existants</h5>
+            <div class="card-deck" data-draggable="target">
+                <div *ngFor="let element of list">
+                    <div id="draggableitem" class="card border-dark mb-3" draggable="true" style="max-width: 250px; min-width: 200px;">
+                        <!-- <a [routerLink]="['/plate']" [queryParams]="{idplate: element.id}"> -->
+                        <div class="card-body">
+                            <h5 class="card-title">Nom du plat: {{element.name}}</h5>
+                            <p class="card-text">Prix: {{element.price}} Ar</p>
+                            <p class="card-text">Bénéfices: {{element.benefits}} Ar</p>
+                            <button class="btn btn-outline-success my-2 my-sm-0" (click)="changevisibility(element.id, true)">Afficher</button>
+                        </div>
+                        <!-- </a> -->   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6" style="overflow-y: scroll;max-height: 500px;">
+        <div class="tab-content" id="v-pills-tabContent">
+            <h5>Plats visibles</h5>
+            <div class="card-deck" data-draggable="target">
+                <div *ngFor="let elementvisible of visiblelist">
+                    <div id="draggableitem" class="card border-dark mb-3" draggable="true" style="max-width: 250px; min-width: 200px;">
+                        <!-- <a [routerLink]="['/plate']" [queryParams]="{idplate: elementvisible.id}"> -->
+                        <div class="card-body">
+                            <h5 class="card-title">Nom du plat: {{elementvisible.name}}</h5>
+                            <p class="card-text">Prix: {{elementvisible.price}} Ar</p>
+                            <p class="card-text">Bénéfices: {{elementvisible.benefits}} Ar</p>
+                            <button class="btn btn-outline-success my-2 my-sm-0" (click)="changevisibility(elementvisible.id, false)">Supprimer</button>
+                        </div>
+                        <!-- </a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <button class="btn btn-outline-success my-2 my-sm-0" (click)="valider()">Valider</button> -->
+
+<!-- <script>
+    let item;
+    document.addEventListener("dragstart", (e) => {
+        item = e.target;
+    });
+    document.addEventListener("dragover", (e) => {
+        e.preventDefault();
+    });
+    document.addEventListener("drop", (e) => {
+        if(e.target.getAttribute("data-draggable") == "target"){
+            e.preventDefault();
+            e.target.appendChild(item);
+        }
+    });
+    document.addEventListener("dragend", () => item=null );
+</script> -->

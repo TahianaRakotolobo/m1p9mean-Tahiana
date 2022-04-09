@@ -1,0 +1,24 @@
+/* [data-draggable="target"]{
+    border: 1px solid
+} */
+
+[data-draggable="item"]{
+    border: 2px
+}
+
+/* #draggableitem.hover{
+    cursor: grab;
+} */
+
+#draggableitem {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+#draggableitem:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
