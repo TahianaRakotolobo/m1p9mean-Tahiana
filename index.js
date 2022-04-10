@@ -9,7 +9,7 @@ var mongoClient = require('mongodb').MongoClient;
 var app = express();
 
 const hostname = '127.0.0.1';
-const port = 3000;
+const port = process.env.PORT || 3000;
 const connectionString = 'mongodb+srv://ekaly:mdpEkaly214@cluster0.rrybw.mongodb.net/m1p9mean-Tahiana?retryWrites=true&w=majority';
 
 // mongoClient.connect(connectionString, {
@@ -58,7 +58,7 @@ mongoClient.connect(connectionString, {
     // ========================
     // Listen
     // ========================
-    app.listen(process.env.PORT, function(){
+    app.listen(port, function(){
         console.log('Server running at http://'+ hostname + ':' + port + '/');
     });
 
@@ -397,8 +397,87 @@ mongoClient.connect(connectionString, {
     });
 
     // bénéfices -> restaurants
-    app.get('/benefits-resto', function(req, res){
-
+    app.post('/benefits-resto', function(req, res){
+        var filtre = req.body.filtre;
+        if(filtre == "plat"){
+            orderCollection.aggregate([
+                { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+                { $unwind: "$orderdetails" },
+                { $match: { 'idresto' : Number(req.body.idresto), 'state' : 'livre' } },
+                { $group: 
+                    { 
+                        _id: { "filtre": "$orderdetails.name" }, 
+                        total:{ $sum: { $multiply: ["$benefits", "nb"] } } 
+                    } 
+                }
+            ]).toArray()
+            .then(plates => {
+                console.log(plates);
+                res.status(200).json({
+                    status: 'success',
+                    data: plates,
+                });
+            })
+            .catch(error => console.error(error));
+        }
+        if(filtre == "jour"){
+            orderCollection.aggregate([
+                { $match: { 'idresto' : Number(req.body.idresto), 'state' : 'livre' } },
+                { $group: 
+                    { 
+                        _id: { filtre: {$day: "$date"} }, 
+                        total:{ $sum: { $multiply: ["$benefits", "nb"] } } 
+                    } 
+                }
+            ]).toArray()
+            .then(plates => {
+                console.log(plates);
+                res.status(200).json({
+                    status: 'success',
+                    data: plates,
+                });
+            })
+            .catch(error => console.error(error));
+        }
+        if(filtre == "mois"){
+            orderCollection.aggregate([
+                { $match: { 'idresto' : Number(req.body.idresto), 'state' : 'livre' } },
+                { $group: 
+                    { 
+                        _id: { filtre: {$month: "$date"} }, 
+                        total:{ $sum: { $multiply: ["$benefits", "nb"] } } 
+                    } 
+                }
+            ]).toArray()
+            .then(plates => {
+                console.log(plates);
+                res.status(200).json({
+                    status: 'success',
+                    data: plates,
+                });
+            })
+            .catch(error => console.error(error));
+        }
+        if(filtre == "annee"){
+            orderCollection.aggregate([
+                { $match: { 'idresto' : Number(req.body.idresto), 'state' : 'livre' } },
+                { $group: 
+                    { 
+                        _id: { filtre: {$year: "$date"} }, 
+                        total:{ $sum: { $multiply: ["$benefits", "nb"] } } 
+                    } 
+                } 
+            ]).toArray()
+            .then(plates => {
+                console.log(plates);
+                res.status(200).json({
+                    status: 'success',
+                    data: plates,
+                });
+            })
+            .catch(error => console.error(error));
+        }
+        
     });
 
     // liste des commandes prêtes -> admin
@@ -566,22 +645,17 @@ mongoClient.connect(connectionString, {
     });
 
     app.post('/research', function(req, res){
-        plateCollection.aggregate(
-            [
+        plateCollection.aggregate([
+            {
+                $match: 
                 {
-                    $project:
-                    {
-                        comparisonResult: { $strcasecmp: [ "$name", req.body.word ] }
-                    },
-                    $match: 
-                    {
-                        "visibility" : true
-                    }
+                    "name": req.body.word,
+                    "visibility" : true 
                 }
-            ]
-        ).toArray()
+            }
+        ]).toArray()
         .then(plates => {
-            console.log(plates);
+            // console.log(plates);
             res.status(200).json({
                 status: 'success',
                 data: plates,
