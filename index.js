@@ -67,6 +67,7 @@ mongoClient.connect(connectionString, {
     // ========================
     app.get('/', function(req, res){
         console.log("request on /");
+        res.send("server is working");
     });
 
     app.post('/signup', function(req, res){
