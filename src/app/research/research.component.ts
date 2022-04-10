@@ -23,7 +23,7 @@ export class ResearchComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private userservice:UserService, private clientservice:ClientService, private restoservice:RestaurantService) { }
 
   ngOnInit(): void {
-    this.route.queryParams.forEach(param => {
+    this.route.params.forEach(param => {
       this.word = param['search'];
     });
     this.research();
@@ -54,7 +54,7 @@ export class ResearchComponent implements OnInit {
     for(let i=0; i<this.list.length; i++){
       // console.log(this.nb[i]);
       if(this.nb[i]>0){
-        var oneplate = new Order(this.list[i].id, this.nb[i],Number(localStorage.getItem('id')), Number(this.idresto), new Date(), this.place, 'commande');
+        var oneplate = new Order(this.list[i].id, this.nb[i],Number(localStorage.getItem('id')), Number(this.list[i].idresto), new Date(), this.place, 'commande');
         this.order[iorder] = oneplate;
         iorder++;
       }

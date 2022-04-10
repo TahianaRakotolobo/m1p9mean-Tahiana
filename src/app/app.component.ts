@@ -26,4 +26,8 @@ export class AppComponent {
     location.reload();
     this.router.navigateByUrl('/accueil');
   }
+  research(){
+    console.log(this.search);
+    this.router.navigate(['/research', { search: this.search }]);
+  }
 }

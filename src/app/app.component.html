@@ -20,9 +20,9 @@
 <div class="row">
     <div class="col-3 bd-sidebar" style="position: sticky;">
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <form class="form-inline my-2 my-lg-0" method="get" action="/research">
+        <form class="form-inline my-2 my-lg-0">
           <input [(ngModel)]="search" name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <button class="btn btn-outline-success my-2 my-sm-0" (click)="research()">Search</button>
         </form>
         {{usertype}}
         <container-element [ngSwitch]="usertype">
