@@ -13,6 +13,8 @@ import { DeliveryassignmentComponent } from './deliveryassignment/deliveryassign
 import { AssignmentComponent } from './assignment/assignment.component';
 import { DeliverydetailsComponent } from './deliverydetails/deliverydetails.component';
 import { ResearchComponent } from './research/research.component';
+import { BenefitsrestoComponent } from './benefitsresto/benefitsresto.component';
+import { BenefitsadminComponent } from './benefitsadmin/benefitsadmin.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'accueil', pathMatch: 'full' },
@@ -28,7 +30,9 @@ const routes: Routes = [
   { path: 'assignment', component: DeliveryassignmentComponent },
   { path: 'myassignment', component: AssignmentComponent },
   { path: 'deliverydetails', component: DeliverydetailsComponent },
-  { path: 'research', component: ResearchComponent }
+  { path: 'research', component: ResearchComponent },
+  { path: 'restobenefits', component: BenefitsrestoComponent },
+  { path: 'adminbenefits', component: BenefitsadminComponent }
 ];
 
 @NgModule({

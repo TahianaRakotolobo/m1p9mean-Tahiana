@@ -30,14 +30,6 @@ export class RegisterComponent implements OnInit {
       const id = response.data.id;
       const token = response.data.token;
       const usertype = response.data.usertype;
-      // const input = {
-      //   id : id,
-      //   token : token,
-      //   name : this.username,
-      //   usertype : usertype
-      // };
-      // this.userservice.setUser(input);
-
 
       localStorage.setItem('id', id);
       localStorage.setItem('token', token);

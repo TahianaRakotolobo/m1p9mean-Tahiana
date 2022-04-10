@@ -1,0 +1,19 @@
+<label for="exampleFormControlSelect1">Filtre</label>
+<select style="margin-left: 5px; margin-right:5px" [(ngModel)]="filtre" name="filtre" id="filtre">
+    <option value="jour">jour</option>
+    <option value="mois" selected="selected">mois</option>
+    <option value="annee">annee</option>
+    <option value="plat">plat</option>
+</select>
+<button class="btn btn-outline-success my-2 my-sm-0" (click)="filtrer()">Filtrer</button>
+
+<table>
+    <tr>
+        <th>filtre</th>
+        <th>montant benefice</th>
+    </tr>
+    <tr *ngFor="let one of data">
+        <td>{{one.filtre}}</td>
+        <td>{{one.total}}</td>
+    </tr>
+</table>

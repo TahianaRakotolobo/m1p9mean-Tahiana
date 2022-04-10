@@ -58,7 +58,7 @@ export class UserService {
   }
 
   research(word:string){
-    var urlsearch = base_url + 'menu';
+    var urlsearch = base_url + 'research';
     let input = {
       word : word,
     }

@@ -67,4 +67,12 @@ export class RestaurantService {
     return this.http.put(urlresto, input);
   }
 
+  filtrer(filtre:string, idresto:number){
+    var urlresto = base_url + 'benefits-resto';
+    let input = {
+      filtre : filtre,
+      idresto :idresto
+    }
+    return this.http.post(urlresto, input);
+  }
 }
