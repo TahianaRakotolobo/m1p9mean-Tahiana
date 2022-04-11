@@ -586,6 +586,118 @@ mongoClient.connect(connectionString, {
         .catch(error => console.error(error));
     });
 
+    // bénéfices -> admin
+    app.post('/benefits-admin', function(req, res){
+        var filtre = req.body.filtre;
+        if(filtre == "plat"){
+            orderCollection.aggregate([
+                { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+                { $unwind: "$orderdetails" },
+                { $match: { 'state' : 'livre' } },
+                { $group: 
+                    { 
+                        _id: { "filtre": "$orderdetails.name" }, 
+                        total:{ $sum: { $multiply: ["$orderdetails.benefits", "$nb"] } } 
+                    } 
+                }
+            ]).toArray()
+            .then(plates => {
+                console.log(plates);
+                res.status(200).json({
+                    status: 'success',
+                    data: plates,
+                });
+            })
+            .catch(error => console.error(error));
+        }
+        if(filtre == "jour"){
+            orderCollection.aggregate([
+                { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+                { $unwind: "$orderdetails" },
+                { $match: { 'state' : 'livre' } },
+                { $group: 
+                    { 
+                        _id: { filtre: {$day: { $toDate: "$date"} } }, 
+                        total:{ $sum: { $multiply: ["$orderdetails.benefits", "$nb"] } } 
+                    } 
+                }
+            ]).toArray()
+            .then(plates => {
+                console.log(plates);
+                res.status(200).json({
+                    status: 'success',
+                    data: plates,
+                });
+            })
+            .catch(error => console.error(error));
+        }
+        if(filtre == "mois"){
+            orderCollection.aggregate([
+                { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+                { $unwind: "$orderdetails" },
+                { $match: { 'state' : 'livre' } },
+                { $group: 
+                    { 
+                        _id: { filtre: {$month: { $toDate: "$date"} } }, 
+                        total:{ $sum: { $multiply: [ "$orderdetails.benefits", "$nb"] } } 
+                    } 
+                }
+            ]).toArray()
+            .then(plates => {
+                console.log(plates);
+                res.status(200).json({
+                    status: 'success',
+                    data: plates,
+                });
+            })
+            .catch(error => console.error(error));
+        }
+        if(filtre == "annee"){
+            orderCollection.aggregate([
+                { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+                { $unwind: "$orderdetails" },
+                { $match: { 'state' : 'livre' } },
+                { $group: 
+                    { 
+                        _id: { filtre: {$year: { $toDate: "$date"}} }, 
+                        total:{ $sum: { $multiply: ["$orderdetails.benefits", "$nb"] } } 
+                    } 
+                } 
+            ]).toArray()
+            .then(plates => {
+                console.log(plates);
+                res.status(200).json({
+                    status: 'success',
+                    data: plates,
+                });
+            })
+            .catch(error => console.error(error));
+        }
+        if(filtre == "resto"){
+            orderCollection.aggregate([
+                { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+                { $unwind: "$orderdetails" },
+                { $lookup: { from: 'user', localField: 'idresto', foreignField: 'id', as: 'restodetails' } },
+                { $unwind: "$restodetails" },
+                { $match: { 'state' : 'livre' } },
+                { $group: 
+                    { 
+                        _id: { filtre: "$restodetails.name" }, 
+                        total:{ $sum: { $multiply: ["$orderdetails.benefits", "$nb"] } } 
+                    } 
+                } 
+            ]).toArray()
+            .then(plates => {
+                console.log(plates);
+                res.status(200).json({
+                    status: 'success',
+                    data: plates,
+                });
+            })
+            .catch(error => console.error(error));
+        }
+    });
+
     // liste commandes à livrer -> livreur
     app.post('/ordered-resto-client', function(req, res){
         orderCollection.aggregate([
