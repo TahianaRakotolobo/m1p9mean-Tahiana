@@ -16,7 +16,7 @@
                         <select style="margin-left: 5px; margin-right:5px" *ngFor="let deliveryman of deliverymen" [(ngModel)]="idman" name="idman" id="idman">
                             <option value="{{deliveryman.id}}">{{deliveryman.name}}</option>
                         </select>
-                        <button class="btn btn-outline-success my-2 my-sm-0" (click)="assign(element._id.client.id, element._id.resto.id)">Attribuer</button>
+                        <button class="btn btn-outline-dark my-2 my-sm-0" (click)="assign(element._id.client.id, element._id.resto.id)">Attribuer</button>
                            
                     </div>
                     
