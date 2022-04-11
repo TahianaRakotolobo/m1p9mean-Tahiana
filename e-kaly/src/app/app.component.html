@@ -1,19 +1,19 @@
-<nav class="navbar navbar-light bg-light" style="position: sticky;">
+<nav class="navbar navbar-light bg-light" style="position: sticky;margin-bottom: 5px;">
     <a class="navbar-brand" href="#">
-        <img src="/./assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="./../assets/img/01.webp" width="30" height="30" class="d-inline-block align-top" alt="">
         E-Kaly
     </a>
     <div *ngIf="token == ''; then SUC else FAIL">
     </div>
     <ng-template #SUC >
         <div class="my-2 my-lg-0">
-            <a type="button" class="btn btn-outline-success mr-sm-2" href="/login">Se connecter</a>
-            <a type="button" class="btn btn-outline-success mr-sm-2" href="/register">S'inscrire</a>
+            <a type="button" class="btn btn-outline-dark mr-sm-2" href="/login">Se connecter</a>
+            <a type="button" class="btn btn-outline-dark mr-sm-2" href="/register">S'inscrire</a>
         </div>
     </ng-template>
     <ng-template #FAIL >
         <div class="my-2 my-lg-0">
-            <a type="button" class="btn btn-outline-success mr-sm-2" (click)="signout()">Se deconnecter</a>
+            <a type="button" class="btn btn-outline-dark mr-sm-2" (click)="signout()">Se deconnecter</a>
         </div>
     </ng-template>
 </nav>
@@ -22,7 +22,7 @@
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         <form class="form-inline my-2 my-lg-0">
           <input [(ngModel)]="search" name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" (click)="research()">Search</button>
+          <button class="btn btn-outline-dark my-2 my-sm-0" (click)="research()">Search</button>
         </form>
         <container-element [ngSwitch]="usertype">
             <div *ngSwitchCase="'Restaurant'">
@@ -48,8 +48,8 @@
                 <!-- <div *ngIf="token == ''; then SUC else FAIL">
                 </div>
                 <ng-template #SUC >
-                    <a type="button" class="btn btn-outline-success mr-sm-2" href="/login">Se connecter</a>
-                    <a type="button" class="btn btn-outline-success mr-sm-2" href="/register">S'inscrire</a>
+                    <a type="button" class="btn btn-outline-dark mr-sm-2" href="/login">Se connecter</a>
+                    <a type="button" class="btn btn-outline-dark mr-sm-2" href="/register">S'inscrire</a>
                 </ng-template>
                 <ng-template #FAIL >
                     <a class="nav-link" (click)="signout()" role="tab" aria-selected="false">Se deconnecter</a>

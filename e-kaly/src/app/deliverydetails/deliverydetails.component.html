@@ -9,10 +9,10 @@
     <div *ngIf="list[0].state == 'a livrer'; then SUC else FAIL">
     </div>
     <ng-template #SUC >
-        <button class="btn btn-outline-success my-2 my-sm-0" (click)="delivering('en cours')">Prendre</button>
+        <button class="btn btn-outline-dark my-2 my-sm-0" (click)="delivering('en cours')">Prendre</button>
     </ng-template>
     <ng-template #FAIL >
-        <button class="btn btn-outline-success my-2 my-sm-0" (click)="delivering('livre')">Livré?</button>
+        <button class="btn btn-outline-dark my-2 my-sm-0" (click)="delivering('livre')">Livré?</button>
     </ng-template>
 </div>
 

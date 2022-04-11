@@ -1,6 +1,6 @@
 <div class="tab-content" id="v-pills-tabContent">
+  <h5>Liste commandes</h5>
     <div class="card-deck">
-  
       <div *ngFor="let element of list" class="card border-dark mb-3" style="max-width: 250px; min-width: 200px;">
         <a [routerLink]="['/orderdetails']" [queryParams]="{idclient: element._id.client.id}">
           <img src="..." class="card-img-top" alt="...">
@@ -9,6 +9,7 @@
             <!-- <p class="card-text">Adresse du client: {{element._id.client.address}}</p> -->
             <p class="card-text">Nom du resto: {{element._id.resto.name}}</p>
             <!-- <p class="card-text">Adresse du resto: {{element._id.resto.address}}</p> -->
+            <button class="btn btn-outline-dark my-2 my-sm-0" type="button">Voir détails</button>
           </div>
         </a>
       </div>
