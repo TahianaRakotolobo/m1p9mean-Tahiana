@@ -1,13 +1,26 @@
 <div style="margin-bottom: 10px;">
     <div class="row">
-        <!-- <label for="exampleFormControlSelect1">Filtre</label> -->
-        <select class="form-control" id="exampleFormControlSelect1" style="margin-left: 5px; margin-right:5px;width: 250px;" [(ngModel)]="filtre" name="filtre" id="filtre">
-            <option value="jour">jour</option>
-            <option value="mois" selected="selected">mois</option>
-            <option value="annee">annee</option>
-            <option value="plat">plat</option>
-        </select>
-        <button class="btn btn-outline-dark my-2 my-sm-0" (click)="filtrer()">Filtrer</button>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Filtre</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="exampleFormControlSelect1" style="margin-left: 5px; margin-right:5px;width: 250px;" [(ngModel)]="filtre" name="filtre" id="filtre">
+                    <option value="jour">jour</option>
+                    <option value="mois" selected="selected">mois</option>
+                    <option value="annee">annee</option>
+                    <option value="plat">plat</option>
+                    <option value="resto">restaurant</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-4 col-form-label">Pourcentage</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control" id="inputPassword" placeholder="1" [(ngModel)]="pourcentage">
+            </div>
+        </div>
+        
+
+        <button style="margin-left: 10px;" class="btn btn-outline-dark" (click)="filtrer()">Filtrer</button>
     </div>
 </div>
 

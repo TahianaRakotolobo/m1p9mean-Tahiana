@@ -9,7 +9,7 @@ import { RestaurantService } from '../service/restaurant.service';
 })
 export class BenefitsrestoComponent implements OnInit {
 
-  filtre = 'mois';
+  filtre = 'plat';
   data = new Array();
 
   constructor(private router: Router, private restoService:RestaurantService) { }

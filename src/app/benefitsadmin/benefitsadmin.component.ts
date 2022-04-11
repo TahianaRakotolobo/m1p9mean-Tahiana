@@ -9,8 +9,9 @@ import { AdminService } from '../service/admin.service';
 })
 export class BenefitsadminComponent implements OnInit {
 
-  filtre = 'mois';
+  filtre = 'resto';
   data = new Array();
+  pourcentage = 1;
 
   constructor(private router: Router, private adminService:AdminService) { }
 
@@ -24,12 +25,19 @@ export class BenefitsadminComponent implements OnInit {
     const success = (response: any = []) => {
       console.log("response", response);
       this.data = response.data;
+      this.calculer();
     };
     const error = (response: any = []) => {
       console.log("Erreur", response);
     }
     this.adminService.filtrer(this.filtre).subscribe(success, error);
 
+  }
+
+  calculer(){
+    for(var i=0; i<this.data.length; i++){
+      this.data[i].total = (this.data[i].total * this.pourcentage)/100;
+    }
   }
 
 }
