@@ -36,4 +36,12 @@ export class AdminService {
     }
     return this.http.post(url, input);
   }
+
+  filtrer(filtre:string){
+    var urlbenef = base_url + 'benefits-admin';
+    let input = {
+      filtre : filtre
+    }
+    return this.http.post(urlbenef, input);
+  }
 }

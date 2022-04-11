@@ -24,7 +24,7 @@ export class BenefitsrestoComponent implements OnInit {
     const success = (response: any = []) => {
       console.log("response", response);
       this.data = response.data;
-      this.router.navigateByUrl('/accueil');
+      // this.router.navigateByUrl('/accueil');
     };
     const error = (response: any = []) => {
       console.log("Erreur", response);

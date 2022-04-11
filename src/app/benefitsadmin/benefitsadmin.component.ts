@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { RestaurantService } from '../service/restaurant.service';
+import { AdminService } from '../service/admin.service';
 
 @Component({
   selector: 'app-benefitsadmin',
@@ -12,7 +12,7 @@ export class BenefitsadminComponent implements OnInit {
   filtre = 'mois';
   data = new Array();
 
-  constructor(private router: Router, private restoService:RestaurantService) { }
+  constructor(private router: Router, private adminService:AdminService) { }
 
   ngOnInit(): void {
     this.filtrer();
@@ -29,7 +29,7 @@ export class BenefitsadminComponent implements OnInit {
     const error = (response: any = []) => {
       console.log("Erreur", response);
     }
-    this.restoService.filtrer(this.filtre, Number(localStorage.getItem('id'))).subscribe(success, error);
+    this.adminService.filtrer(this.filtre).subscribe(success, error);
 
   }
 
