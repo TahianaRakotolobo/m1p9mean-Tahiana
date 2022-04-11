@@ -408,7 +408,7 @@ mongoClient.connect(connectionString, {
                 { $group: 
                     { 
                         _id: { "filtre": "$orderdetails.name" }, 
-                        total:{ $sum: { $multiply: ["$benefits", "nb"] } } 
+                        total:{ $sum: { $multiply: ["$orderdetails.benefits", "$nb"] } } 
                     } 
                 }
             ]).toArray()
@@ -423,11 +423,13 @@ mongoClient.connect(connectionString, {
         }
         if(filtre == "jour"){
             orderCollection.aggregate([
+                { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+                { $unwind: "$orderdetails" },
                 { $match: { 'idresto' : Number(req.body.idresto), 'state' : 'livre' } },
                 { $group: 
                     { 
-                        _id: { filtre: {$day: "$date"} }, 
-                        total:{ $sum: { $multiply: ["$benefits", "nb"] } } 
+                        _id: { filtre: {$day: { $toDate: "$date"} } }, 
+                        total:{ $sum: { $multiply: ["$orderdetails.benefits", "$nb"] } } 
                     } 
                 }
             ]).toArray()
@@ -442,11 +444,13 @@ mongoClient.connect(connectionString, {
         }
         if(filtre == "mois"){
             orderCollection.aggregate([
+                { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+                { $unwind: "$orderdetails" },
                 { $match: { 'idresto' : Number(req.body.idresto), 'state' : 'livre' } },
                 { $group: 
                     { 
-                        _id: { filtre: {$month: "$date"} }, 
-                        total:{ $sum: { $multiply: ["$benefits", "nb"] } } 
+                        _id: { filtre: {$month: { $toDate: "$date"} } }, 
+                        total:{ $sum: { $multiply: [ "$orderdetails.benefits", "$nb"] } } 
                     } 
                 }
             ]).toArray()
@@ -461,11 +465,13 @@ mongoClient.connect(connectionString, {
         }
         if(filtre == "annee"){
             orderCollection.aggregate([
+                { $lookup: { from: 'plate', localField: 'idplate', foreignField: 'id', as: 'orderdetails' } },
+                { $unwind: "$orderdetails" },
                 { $match: { 'idresto' : Number(req.body.idresto), 'state' : 'livre' } },
                 { $group: 
                     { 
-                        _id: { filtre: {$year: "$date"} }, 
-                        total:{ $sum: { $multiply: ["$benefits", "nb"] } } 
+                        _id: { filtre: {$year: { $toDate: "$date"}} }, 
+                        total:{ $sum: { $multiply: ["$orderdetails.benefits", "$nb"] } } 
                     } 
                 } 
             ]).toArray()
