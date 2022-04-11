@@ -428,7 +428,7 @@ mongoClient.connect(connectionString, {
                 { $match: { 'idresto' : Number(req.body.idresto), 'state' : 'livre' } },
                 { $group: 
                     { 
-                        _id: { filtre: {$dayOfYear: { $toDate: "$date"} } }, 
+                        _id: { filtre: {$dayOfMonth: { $toDate: "$date"} } }, 
                         total:{ $sum: { $multiply: ["$orderdetails.benefits", "$nb"] } } 
                     } 
                 }
@@ -617,7 +617,7 @@ mongoClient.connect(connectionString, {
                 { $match: { 'state' : 'livre' } },
                 { $group: 
                     { 
-                        _id: { filtre: {$dayOfYear: { $toDate: "$date"} } }, 
+                        _id: { filtre: {$dayOfMonth: { $toDate: "$date"} } }, 
                         total:{ $sum: { $multiply: ["$orderdetails.benefits", "$nb"] } } 
                     } 
                 }
